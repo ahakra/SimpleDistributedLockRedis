@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # db:
+  #   image: postgres:16.2
+  #   restart: always
+  #   ports:
+  #     - '5433:5432'
+  #   environment:
+  #     - POSTGRES_PASSWORD=pass123
+
+  nest-cloud-run:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nest-cloud-run
+    deploy:
+      replicas: 3
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine3.20
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
